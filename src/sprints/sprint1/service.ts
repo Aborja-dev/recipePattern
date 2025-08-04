@@ -8,6 +8,7 @@ const createOrder = (ids: number[]): IOrder => {
     const priceTotal = products.reduce((total, product) => total + product.price, 0);
     // Insertar la orden en la base de datos
     const order = OrdersRepository.insert({ name: "Orden 1", items: ids, priceTotal });
+    console.log('email enviado');
     return order
 };
 

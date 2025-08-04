@@ -1,4 +1,4 @@
-import { Client } from './sprints/sprint1';
+import { Client } from './sprints/sprint1/service';
 import { products } from './sprints/sprint1/db';
 // soy un cliente y quiero hacer una orden entonces elijo 3 productos de la tienda
 
