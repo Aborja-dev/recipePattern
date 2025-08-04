@@ -7,7 +7,7 @@ const choiceProducts = (ammount: number) => {
     return randomProducts
 };
 
-const makeASell = () => {
+const buyProducts = () => {
     // elijo 3 productos
     const products = choiceProducts(3);
     // creo la orden
@@ -20,7 +20,7 @@ const mostrador = ({
 }) => {
     whatIDo()
 }
-
+// voy al mostrador a hacer mi compra
 mostrador({
-    whatIDo: makeASell
+    whatIDo: buyProducts
 })
