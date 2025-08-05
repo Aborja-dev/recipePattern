@@ -10,24 +10,38 @@ const choiceProducts = (ammount: number) => {
 
 const buyProducts = () => {
     // elijo 3 productos
-    const products = choiceProducts(3);
+    const _products = [products[0], products[0], products[0]];
     // presento mi tarjeta VIP y el vendedor sabe que soy VIP
-    const isVip = true;
+    const isVip = false;
     // cuando el cliente llega muestra los objetos y su tarjeta VIP
+    const discount = 0.4;
+    // 
+    const skipInventory = false;
+    // 
     return {
-        products,
-        isVip
+        products: _products,
+        isVip,
+        discount,
+        skipInventory
     }
 }
 
 const makeASell = () => {
     // literalmente es lo que el cliente muestra
-    const { products, isVip } = buyProducts();
+    const { products, isVip, discount, skipInventory } = buyProducts();
     let order = {}
     if (isVip) {
-        order = ClientVip.makeOrder(products.map(product => product.id));
+        order = ClientVip.makeOrder({
+            ids: products.map(product => product.id),
+            discount: discount,
+            skipInventory: skipInventory
+        });
     } else {
-        order = Client.makeOrder(products.map(product => product.id));
+        order = Client.makeOrder({
+            ids: products.map(product => product.id),
+            discount: discount,
+            skipInventory: skipInventory
+        });
     }
     // creo la orden
     return order
@@ -55,17 +69,17 @@ export const runSprint7 = () => {
     const venta = mostrador({
         whatIDo: makeASell
     });
-    console.log("El vendedor se hizo la venta", venta);
+    //console.log("El vendedor se hizo la venta", venta);
     // El manager se encarga de ver las ordenes
     const ordenes = mostrador({
         whatIDo: verifyOrders
     });
-    console.log("El manager verifico las ordenes", ordenes);
+    //console.log("El manager verifico las ordenes", ordenes);
     // El manager se encarga de ver el stock
     const stock = mostrador({
         whatIDo: verifyStock
     });
-    console.log("El manager verifico el stock", stock);
+    //console.log("El manager verifico el stock", stock);
     
 };
 

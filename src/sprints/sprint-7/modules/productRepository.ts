@@ -12,9 +12,12 @@ export const ProductsRepository = {
     selectAll: () => [...products],
     update: (id: number, product: Partial<IProduct>) => { 
         const index = products.findIndex(p => p.id === id);
-
+        console.log(`cantidad de productos ${products[index].quantity}`);
+        
         if (index !== -1) {
             products[index] = {...products[index], ...product};
+            console.log(`se acyualizo el producto con id ${id} ahora es ${products[index].quantity}`);
+            
         } else {
             throw new Error(`Product with id ${id} not found.`);
         }

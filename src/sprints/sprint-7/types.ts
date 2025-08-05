@@ -1,7 +1,12 @@
 export interface IOrder {
     id: number,
     name: string,
-    items: number[],
+    items: {
+        id: number,
+        quantity: number,
+        subtotal: number,
+        name: string
+    }[],
     priceTotal: number,
     isVIP?: boolean
 }
