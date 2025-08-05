@@ -8,7 +8,8 @@ export interface IOrder {
         name: string
     }[],
     priceTotal: number,
-    isVIP?: boolean
+    isVIP?: boolean,
+    discount?: number
 }
 
 export interface IProduct {

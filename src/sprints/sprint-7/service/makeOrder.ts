@@ -1,4 +1,6 @@
-import { emailSender, OrdersRepository } from "../modules";
+import { emailSender } from '../modules/emailBuilder';
+
+import { OrdersRepository } from "../modules";
 import { ProductsRepository } from "../modules/productRepository";
 import { IOrder } from "../types"
 import { IStock, Stock } from "./Inventory";
@@ -70,8 +72,15 @@ export const makeClientOrder = ({
     const rawOrder = makeRawOrder({ ids, discount, skipInventory });
     // aplicar el descuento
     const priceFinal = rawOrder.priceTotal * (1 - discount);
+    const totalDiscount = discount !== 0 
+        ? discount
+        : undefined;
     // insertar la orden en la base de datos
-    const order = OrdersRepository.insert({ ...rawOrder, priceTotal: priceFinal });
+    const order = OrdersRepository.insert({ 
+        ...rawOrder, 
+        priceTotal: priceFinal,
+        discount: totalDiscount
+    });
     const updateList = order.items.map(item => ({
         productId: item.id,
         quantity: item.quantity
@@ -94,12 +103,20 @@ export const makeVIPOrder = ({
     // aplicar el descuento de 10% para VIP
     const priceVip = rawOrder.priceTotal * (1 - 0.1);
     const priceFinal = priceVip * (1 - discount);
+    const totalDiscount = discount !== 0 
+        ? discount + 0.1
+        : 0.1;
     // insertar la orden en la base de datos
-    const order = OrdersRepository.insert({ ...rawOrder, priceTotal: priceFinal });
+    const order = OrdersRepository.insert(
+        { ...rawOrder, 
+            priceTotal: priceFinal,
+            discount: totalDiscount,
+            isVIP: true 
+        });
     emailSender.send(order, "vip");
     const updateList = rawOrder.items.map(item => ({
         productId: item.id,
-        quantity: item.quantity
+        quantity: item.quantity,
     }))
     Stock.update(updateList);
     return order
