@@ -15,35 +15,3 @@ export const products: IProduct[] = [
 ];
 
 // Array de 5 órdenes
-export const orders: IOrder[] = [
-    {
-        id: 1001,
-        name: "Orden Gaming Setup Completo",
-        items: [1, 2, 3, 4, 5], // Laptop + Mouse + Teclado + Monitor + Auriculares
-        priceTotal: 1815.46
-    },
-    {
-        id: 1002, 
-        name: "Orden Accesorios Básicos",
-        items: [2, 8, 10], // Mouse + Desk Pad + Lámpara
-        priceTotal: 103.99
-    },
-    {
-        id: 1003,
-        name: "Orden Workstation Profesional", 
-        items: [1, 6, 9, 7], // Laptop + Webcam + Hub + Silla
-        priceTotal: 1654.97
-    },
-    {
-        id: 1004,
-        name: "Orden Periféricos Premium",
-        items: [3, 4, 5, 8], // Teclado + Monitor + Auriculares + Desk Pad
-        priceTotal: 495.96
-    },
-    {
-        id: 1005,
-        name: "Orden Setup Minimalista",
-        items: [2, 9, 10], // Mouse + Hub + Lámpara
-        priceTotal: 118.48
-    }
-];

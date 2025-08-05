@@ -29,11 +29,7 @@ export const makeRawOrder = ({
     let productList: IStock[] = []
     // verificar el inventario
     if (!skipInventory) {
-        const stock = Stock.verify(groupedProducts.map(product => (
-            { productId: product.productId, 
-                quantity: product.quantity 
-            })));
-        productList = stock
+        productList = Stock.verify(groupedProducts)
     } else {
         productList = groupedProducts
     }
@@ -85,7 +81,7 @@ export const makeClientOrder = ({
         productId: item.id,
         quantity: item.quantity
     }))
-    Stock.update(updateList);
+    if (!skipInventory) Stock.update(updateList);
     emailSender.send(order, "normal");
     return order
 }
@@ -102,10 +98,11 @@ export const makeVIPOrder = ({
     const rawOrder = makeRawOrder({ ids, discount, skipInventory });
     // aplicar el descuento de 10% para VIP
     const priceVip = rawOrder.priceTotal * (1 - 0.1);
+    const DISCOUNT_VIP = 0.1;
     const priceFinal = priceVip * (1 - discount);
     const totalDiscount = discount !== 0 
-        ? discount + 0.1
-        : 0.1;
+        ? discount + DISCOUNT_VIP
+        : DISCOUNT_VIP;
     // insertar la orden en la base de datos
     const order = OrdersRepository.insert(
         { ...rawOrder, 
@@ -118,6 +115,6 @@ export const makeVIPOrder = ({
         productId: item.id,
         quantity: item.quantity,
     }))
-    Stock.update(updateList);
+    if (!skipInventory) Stock.update(updateList);
     return order
 }
