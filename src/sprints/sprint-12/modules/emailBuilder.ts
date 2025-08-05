@@ -14,10 +14,10 @@ class EmailTemplate {
     }
     private discountTemplate(discount: number) {
         const discountPrice = this.order.priceTotal * discount;
-        return `<p>Has ahorrado ${discountPrice}$ con un descuento del ${discount * 100}%</p>`
+        return `<p>Has ahorrado ${discountPrice.toFixed(2)}$ con un descuento del ${(discount * 100).toFixed(0)}%</p>`
     }
     private total() {
-        return `<p>Precio total: ${this.order.priceTotal.toFixed(2)}$</p>`
+        return `<p>Precio total: $${this.order.priceTotal.toFixed(2)}</p>`
     }
     public build() {
         const discountSection = this.order.discount ? this.discountTemplate(this.order.discount) : "";

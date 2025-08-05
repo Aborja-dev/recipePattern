@@ -38,11 +38,7 @@ export const makeOrder = ({
     // Calcular el precio con  descuento
     const { total, totalDiscount } = PricingEngine.calculate(price, pricing);
     // Calcular costo de envio
-    const {total: shippingCost} = PricingEngine.calculate(price, {
-        express: pricing.express,
-        local: pricing.local,
-        vip: pricing.vip
-    });
+    const shippingCost = PricingEngine.shipping(price, pricing);
     // Insertar la orden en la base de datos
     const order = OrdersRepository.insert(
         { 

@@ -23,4 +23,10 @@ export const PricingEngine = {
             totalDiscount: discount,
         }
     },
+    shipping: (total: number, pricing: Pricing) => {
+        const {bulk, express} = pricing
+        if (bulk) return total * 0;
+        if (express) return total * 0.05;
+        return total * 0.15
+    }
 }

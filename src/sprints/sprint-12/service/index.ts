@@ -30,7 +30,7 @@ export const ShopService = (
 ) => {
     const user = users.find(user => user.id === info.userId);
     const groupProducts = groupProduct(info.productIds);
-    const totalAmmount = groupProducts.reduce((acc, product) => acc + product.subtotal, 0);
+    const totalAmmount = groupProducts.reduce((acc, product) => acc + product.quantity, 0);
     const pricing: Pricing = {
         discount: options.discount,
         express: options.express,
@@ -38,9 +38,10 @@ export const ShopService = (
         vip: user?.vip,
         bulk: totalAmmount > 10,
     }
-    makeOrder({
+    const order = makeOrder({
         ids: info.productIds,
         pricing: pricing,
         skipInventory: config?.skipInventory || false
     });
+    return order
 }
