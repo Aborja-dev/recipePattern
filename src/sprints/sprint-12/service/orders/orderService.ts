@@ -1,12 +1,10 @@
-import { calculate, calculateShipping } from './../../modules/pricingCalculator';
+import { PricingEngine} from './../../modules/pricingCalculator';
 import { Stock } from "../../modules/stockManager";
 import { ProductsRepository } from "../../modules/productRepository";
 import { OrdersRepository } from "../../modules/orderRepository";
 import { emailSender } from "../../modules/emailBuilder";
 import { Pricing, Stock as typeStock } from "../../types/types";
 import { groupProduct } from "../helpers";
-
-
 
 export const makeOrder = ({
     ids,
@@ -38,16 +36,20 @@ export const makeOrder = ({
     // Calcular el precio total
     const price = subTotalList.reduce((total, product) => total + product.subtotal, 0);
     // Calcular el precio con  descuento
-    const { total, totaldiscount } = calculate(price, pricing);
+    const { total, totalDiscount } = PricingEngine.calculate(price, pricing);
     // Calcular costo de envio
-    const shippingCost = calculateShipping(price, pricing);
+    const {total: shippingCost} = PricingEngine.calculate(price, {
+        express: pricing.express,
+        local: pricing.local,
+        vip: pricing.vip
+    });
     // Insertar la orden en la base de datos
     const order = OrdersRepository.insert(
         { 
             name: `Orden ${Date.now()}`, 
             items: ids, 
             priceTotal: total, 
-            discount: totaldiscount,
+            discount: totalDiscount,
             shipping: shippingCost
         });
     // Enviar la orden por email

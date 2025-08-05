@@ -1,4 +1,5 @@
-import { Stock } from "../../types/types";
+import { Stock } from "../types/types";
+
 
 export const groupProduct = (ids: number[]) => {
     return ids.reduce((acc, id) => {
