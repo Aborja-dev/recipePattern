@@ -38,13 +38,18 @@ const verifyOrders = () => {
     return orders
 }
 
+const verifyStock = () => {
+    const products = Manager.checkInventory();
+    return products
+}
+
 const mostrador = ({
     whatIDo
 }) => {
     return whatIDo()
 }
 // voy al mostrador a hacer mi compra
-export const runSprint3 = () => {
+export const runSprint7 = () => {
     // El vendedor se encarga de hacer la venta
     
     const venta = mostrador({
@@ -56,6 +61,11 @@ export const runSprint3 = () => {
         whatIDo: verifyOrders
     });
     console.log("El manager verifico las ordenes", ordenes);
+    // El manager se encarga de ver el stock
+    const stock = mostrador({
+        whatIDo: verifyStock
+    });
+    console.log("El manager verifico el stock", stock);
     
 };
 

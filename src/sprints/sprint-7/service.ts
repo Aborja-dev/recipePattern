@@ -3,7 +3,7 @@ import { emailSender, OrdersRepository } from "./modules";
 import { ProductsRepository } from "./modules/productRepository";
 import { IOrder, IProduct } from "./types";
 
-const checkInventory = (ids: number[]) => {
+const verify = (ids: number[]) => {
     const products = ProductsRepository.selectMany(ids);
     return products.map((products) => {
         const result = verifyStock(products.id, 1);
@@ -37,8 +37,9 @@ type ProductStock = IProduct & { stock: boolean | string };
 const updateStock = (stock: ProductStock[]) => {
     stock.forEach(product => {
         if (product.stock === true) {
+            const {stock, ...rest} = product
             ProductsRepository.update(product.id, {
-                ...product,
+                ...rest,
                 quantity: product.quantity - 1
             });
         }
@@ -48,7 +49,7 @@ const updateStock = (stock: ProductStock[]) => {
 // la idea es abtraer lo mas que se pueda las operaciones de modo que siempre se pueda saber en donde cambia cada caso
 export const Client = {
     makeOrder: (ids: number[], discount: number = 0) => {
-        const stock = checkInventory(ids);
+        const stock = verify(ids);
         // Obtener solo los productos que tienen stock
         const products = stock.filter(product => product.stock === true);
         const orderRaw = makeOrder(products);
@@ -65,7 +66,7 @@ export const Client = {
 
 export const ClientVip = {
     makeOrder: (ids: number[], discount: number = 0) => {
-        const stock = checkInventory(ids);
+        const stock = verify(ids);
         // Obtener solo los productos que tienen stock
         const products = stock.filter(product => product.stock === true);
         const orderRaw = makeOrder(products);
@@ -83,7 +84,8 @@ export const ClientVip = {
 }
 
 const getOrders = () => OrdersRepository.select();
-
+const checkInventory = () => ProductsRepository.selectAll();
 export const Manager = {
-    verify: getOrders
+    verify: getOrders,
+    checkInventory
 }

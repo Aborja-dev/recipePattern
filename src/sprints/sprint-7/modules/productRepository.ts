@@ -9,6 +9,7 @@ export const ProductsRepository = {
     selectOne: (id: number): IProduct | null => {
         return products.find(product => product.id === id) ?? null;
     },
+    selectAll: () => [...products],
     update: (id: number, product: Partial<IProduct>) => { 
         const index = products.findIndex(p => p.id === id);
 
